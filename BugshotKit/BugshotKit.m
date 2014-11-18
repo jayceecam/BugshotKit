@@ -213,11 +213,11 @@ UIImage *BSKImageWithDrawing(CGSize size, void (^drawingCommands)())
     // BugshotKit is only meant to be used during development and beta testing. Do not ship it in App Store builds.
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-    if ([UIEvent.class instancesRespondToSelector:@selector(_gsEvent)] &&
-        [UIViewController.class instancesRespondToSelector:@selector(attentionClassDumpUser:yesItsUsAgain:althoughSwizzlingAndOverridingPrivateMethodsIsFun:itWasntMuchFunWhenYourAppStoppedWorking:pleaseRefrainFromDoingSoInTheFutureOkayThanksBye:)]) {
-        // I can't believe I actually had a reason to call this method.
-        [self.window.rootViewController attentionClassDumpUser:nil yesItsUsAgain:nil althoughSwizzlingAndOverridingPrivateMethodsIsFun:nil itWasntMuchFunWhenYourAppStoppedWorking:nil pleaseRefrainFromDoingSoInTheFutureOkayThanksBye:nil];
-    }
+//    if ([UIEvent.class instancesRespondToSelector:@selector(_gsEvent)] &&
+//        [UIViewController.class instancesRespondToSelector:@selector(attentionClassDumpUser:yesItsUsAgain:althoughSwizzlingAndOverridingPrivateMethodsIsFun:itWasntMuchFunWhenYourAppStoppedWorking:pleaseRefrainFromDoingSoInTheFutureOkayThanksBye:)]) {
+//        // I can't believe I actually had a reason to call this method.
+//        [self.window.rootViewController attentionClassDumpUser:nil yesItsUsAgain:nil althoughSwizzlingAndOverridingPrivateMethodsIsFun:nil itWasntMuchFunWhenYourAppStoppedWorking:nil pleaseRefrainFromDoingSoInTheFutureOkayThanksBye:nil];
+//    }
 #pragma clang diagnostic pop
 }
 
@@ -597,6 +597,10 @@ UIImage *BSKImageWithDrawing(CGSize size, void (^drawingCommands)())
 #endif
 
     // Adapted from https://github.com/blindsightcorp/BSMobileProvision
+    
+    if ([[[NSProcessInfo processInfo] environment] objectForKey:@"DEBUG_BUGSHOT_OVERRIDE"]) {
+        return NO;
+    }
 
     NSString *binaryMobileProvision = [NSString stringWithContentsOfFile:[NSBundle.mainBundle pathForResource:@"embedded" ofType:@"mobileprovision"] encoding:NSISOLatin1StringEncoding error:NULL];
     if (! binaryMobileProvision) return YES; // no provision
